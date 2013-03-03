@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>what&#39;s the word</title>
+  <link rel="stylesheet" href="site_media/css/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="site_media/css/my.css" />
+  <script src="site_media/js/jquery.min.js"></script>
+  <script src="site_media/js/jquery.mobile-1.2.0.min.js"></script>
+  <script src="site_media/js/my.js"></script>
+  <!-- User-generated js -->
+  <script>
+      $(function(){
+            App = {};
+
+            get_random_str = function(str) {
+                var possible;
+                possible = "abcdefghijklmnopqrstuvwxyz";
+                if (str) { possible = str; }
+                return possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+
+            init_answer = function(answer) {
+                var random_keys = "";
+                App['answer']  = answer;
+                App['mapping'] = {};
+
+                $('#answer span').remove();
+                for (var i=0; i < answer.length; i++) {
+                    $('#answer').append($('<span onClick="javascript:del_single('+i+');" style="display: inline-block; width:30px; height:30px; background:white; margin-right:10px; font-size:x-large">').html('_'));
+                }
+
+                for (var i=0; i < 7; i++){
+                    random_keys += get_random_str();
+                }
+                random_keys = (random_keys + answer).substr(-10).toUpperCase();
+
+                for (var i=0; i < 10; i++){
+                    var random_key = get_random_str(random_keys);
+                    random_keys = random_keys.replace(new RegExp(random_key),"");
+                    $('#alphabets').append($('<div style="float: left;width:50px;height:50px">').html($('<span onClick="javascript:add_single('+i+',\''+random_key+'\');" style="display: inline-block; width:40px; height:40px; background:#EAC117; margin-right:5px; margin-bottom: 5px; font-size:xx-large; color:#EBEBEB; text-shadow:2px 2px #000;">').html(random_key)));
+                }
+            }
+            add_single = function(pos, ch) {
+                var index, answers;
+                index = -1;
+                answers = $('#answer span');
+                for (var i=0; i < answers.length; i++) {
+                    if (answers[i].innerText == '_') {
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (index > -1) {
+                    answers[index].innerText = ch;
+                    App['mapping'][index] = pos;
+                    $('#alphabets span').eq(pos).slideUp();
+                }
+            }
+            del_single = function(pos) {
+                $('#answer span').eq(pos).html('_');
+                $('#alphabets span').eq(App['mapping'][pos]).slideDown();
+            }
+
+            init_answer('SHAKE');
+      });
+  </script>
+</head>
+<body>
+  <div data-role="page" id="page1">
+      <div data-theme="" data-role="header">
+          <h5> Stage 23 </h3>
+      </div>
+      <div data-role="content" style="background-image: url(site_media/images/word_wall.jpg); border: 1px solid black;">
+          <div style="text-align:center">
+              <img style="width: 280px; height: 280px" src="site_media/images/quiz/shake.png">
+          </div>
+          <div style="text-align:center" id="answer">
+              <ul></ul>
+          </div>
+          <div class="ui-grid-d" id="alphabets" style="margin: 30px 50px;text-align:center;">
+          </div>
+      </div>
+      <div data-theme="c", data-role="footer", data-position="fixed">
+          <h5>
+              <p> Powered by Realtime Relay Sever (a.k.a Vu:Talk) </p>
+          </h5>
+      </div>
+  </div>
+</body>
+</html>
