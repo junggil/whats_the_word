@@ -10,9 +10,54 @@ html
     link(rel='stylesheet', href='/css/my.css')
     script(src='/js/jquery.min.js')
     script(src='/js/jquery.mobile-1.2.0.min.js')
-    script(src='/js/jQuery.tubeplayer.min.js')
+    script(src='/js/jquery.nestable.js')
     script(src='/socket.io/socket.io.js')
     script(src='/js/my.js')
   body
     #page1(data-role='page')
-      | Hello World
+      div(data-theme='a', data-role='header')
+        h5
+          | Stage   
+      div(data-role='content')
+        .split-wrapper
+          .content-secondary(style='text-align:center;margin-top:30px')
+            #quiz-pic
+              img(src='/images/end.jpg')
+          .content-primary#playlist
+            ul(data-role='listview', data-divider-theme='a', data-inset='true')
+                li(data-role='list-divider', role='heading')
+                 | Ranking
+                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#first
+                   img.ui-li-thumb(src='/images/1st.jpg', alt='Thumbnail')
+                   h3.ui-li-heading James
+                   h5.ui-li-heading 맞춘 문제 : 15
+                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='c')#second
+                   img.ui-li-thumb(src='/images/2nd.jpg', alt='Thumbnail')
+                   h3.ui-li-heading 방망이
+                   h5.ui-li-heading 맞춘 문제 : 3
+                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='c')#third
+                   img.ui-li-thumb(src='/images/3rd.jpg', alt='Thumbnail')
+                   h3.ui-li-heading 척척박사
+                   h5.ui-li-heading 맞춘 문제 : 1
+            div
+                .dd.dd-handle 
+                  span(style='color:red') James 
+                  | says : 
+                  span(style='color:green') SHAKE
+                .dd.dd-handle 
+                  span(style='color:red') James 
+                  | says : 
+                  span(style='color:green') SHAKE
+                .dd.dd-handle 
+                  span(style='color:red') James 
+                  | says : 
+                  span(style='color:green') SHAKE
+                .dd.dd-handle 
+                  span(style='color:red') James 
+                  | says : 
+                  span(style='color:green') SHAKE
+ 
+      div(data-theme='a', data-role='footer', data-position='fixed')
+        h2
+          p(style="text-decoration:underline;color:orange;") CODE: #{code}
+          p Powered by Realtime Relay Server (a.k.a Vu:Talk )

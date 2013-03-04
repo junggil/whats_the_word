@@ -272,7 +272,7 @@ function closestEnabledButton( element ) {
 }
 
 $(function(){
-    var socket = io.connect('http://192.168.0.2');
+    var socket = io.connect(window.location.hostname);
     socket.on('playlist add', function(data) {
         add_movie(data.id, data.title);
     });
