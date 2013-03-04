@@ -1,5 +1,4 @@
 express = require 'express'
-request = require 'request'
 socketio = require 'socket.io'
 fs = require 'fs'
 
