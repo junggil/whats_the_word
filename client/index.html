@@ -52,7 +52,7 @@
                   $('#stage').html('Stage Completed');
                   image = $('#quiz_pic');
                   image.fadeOut('fast', function () {
-                      image.attr('src', server + '/images/end.png');
+                      image.attr('src', server + '/images/end.jpg');
                       image.fadeIn('slow');
                   });
                   $('#alphabets span').css('background', 'gray');
@@ -76,7 +76,7 @@
           $('#stage').html('Stage ' + stage);
           image = $('#quiz_pic');
           image.fadeOut('fast', function () {
-              image.attr('src', server + '/images/quiz/'+answer+'.png');
+              image.attr('src', server + '/images/quiz/'+answer+'.jpg');
               image.fadeIn('slow');
           });
 
