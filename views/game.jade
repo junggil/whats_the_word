@@ -13,6 +13,17 @@ html
     script(src='/js/jquery.nestable.js')
     script(src='/socket.io/socket.io.js')
     script(src='/js/my.js')
+    script
+        App = {};
+        update_board = function() {
+            $('#board').prepend($('<div class="dd dd-handle">').html('<span></span> &nbsp;<span style="color:red"></span> says : <span style="color:green"></span>'));
+            $('#board span').eq(0).html(App['num_try']++);
+            $('#board span').eq(1).html('Name');
+            $('#board span').eq(2).html('TEST');
+        }
+        $(function(){
+            App['num_try'] = 1;
+        });
   body
     #page1(data-role='page')
       div(data-theme='a', data-role='header')
@@ -20,7 +31,7 @@ html
           | Stage   
       div(data-role='content')
         .split-wrapper
-          .content-secondary(style='text-align:center;margin-top:30px')
+          .content-secondary(style='text-align:center;margin-top:15px')
             #quiz-pic
               img(src='/images/end.jpg')
           .content-primary#playlist
@@ -29,29 +40,20 @@ html
                  | Ranking
                 li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#first
                    img.ui-li-thumb(src='/images/1st.jpg', alt='Thumbnail')
-                   h3.ui-li-heading James
-                   h5.ui-li-heading 맞춘 문제 : 15
+                   h3.ui-li-heading Waiting
+                   h5.ui-li-heading 맞춘 문제 : 
+                     span 0
                 li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='c')#second
                    img.ui-li-thumb(src='/images/2nd.jpg', alt='Thumbnail')
-                   h3.ui-li-heading 방망이
-                   h5.ui-li-heading 맞춘 문제 : 3
+                   h3.ui-li-heading Waiting
+                   h5.ui-li-heading 맞춘 문제 : 
+                     span 0
                 li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='c')#third
                    img.ui-li-thumb(src='/images/3rd.jpg', alt='Thumbnail')
-                   h3.ui-li-heading 척척박사
-                   h5.ui-li-heading 맞춘 문제 : 1
-            div
-                .dd.dd-handle 
-                  span(style='color:red') James 
-                  | says : 
-                  span(style='color:green') SHAKE
-                .dd.dd-handle 
-                  span(style='color:red') James 
-                  | says : 
-                  span(style='color:green') SHAKE
-                .dd.dd-handle 
-                  span(style='color:red') James 
-                  | says : 
-                  span(style='color:green') SHAKE
+                   h3.ui-li-heading Waiting
+                   h5.ui-li-heading 맞춘 문제 : 
+                     span 0
+            #board
                 .dd.dd-handle 
                   span(style='color:red') James 
                   | says : 
