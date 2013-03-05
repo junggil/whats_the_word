@@ -58,7 +58,7 @@ io.sockets.on 'connection', (socket) =>
         socket.broadcast.emit 'chat message', data
 
 #RestAPI
-app.post '/quiz/submit', (req, res) =>
+app.get '/quiz/submit', (req, res) =>
     if req.body['answer'] == quiz_info.quiz.toUpperCase()
         global.quiz_info = {stage:quiz_info.stage + 1, quiz:quiz_bucket.pop()}
         io.sockets.emit 'quiz next notification'

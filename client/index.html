@@ -121,7 +121,7 @@
                   res += answers[i].innerText;
               }
               if (i == answers.length) {
-                  $.post(server + '/quiz/submit', {'nickname':App['nickname'], 'answer': res}, function(data) {
+                  $.getJSON(server + '/quiz/submit?callback=?', {'nickname':App['nickname'], 'answer': res}, function(data) {
                       if (data.result){ show_message('success'); }
                       else { show_message('error'); }
                   });
