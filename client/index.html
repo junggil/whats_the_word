@@ -35,6 +35,7 @@
           }
           else {
             socket.emit('mobile connect', {'nickname':$('#nickname').val(), 'code':$('#code').val()});
+            App['nickname'] = $('#nickname').val();
           }
       }
 
@@ -46,7 +47,7 @@
 
       get_quiz = function() {
           $.getJSON(server + '/quiz?callback=?', null, function(data){
-              if (data.quiz.length) { init_answer(data.stage, data.quiz.pop()); }
+              if (data.quiz) { init_answer(data.stage, data.quiz); }
               else {
                   var image;
                   $('#stage').html('Stage Completed');
@@ -70,7 +71,6 @@
 
       init_answer = function(stage, answer) {
           var image, random_keys = "";
-          App['answer']  = answer;
           App['mapping'] = {};
 
           $('#stage').html('Stage ' + stage);
@@ -121,13 +121,10 @@
                   res += answers[i].innerText;
               }
               if (i == answers.length) {
-                  if (res == App['answer'].toUpperCase()){ 
-                      show_message('success'); 
-                      $.getJSON(server + '/quiz/next?callback=?', null, null );
-                  }
-                  else {
-                      show_message('error'); 
-                  }
+                  $.post(server + '/quiz/submit', {'nickname':App['nickname'], 'answer': res}, function(data) {
+                      if (data.result){ show_message('success'); }
+                      else { show_message('error'); }
+                  });
               }
           }
       }
@@ -135,19 +132,6 @@
           $('#answer span').eq(pos).html('_');
           $('#alphabets span').eq(App['mapping'][pos]).slideDown();
       }
-      generate = function(msg, type) {
-          var n = noty({
-              text: msg,
-              type: type,
-              dismissQueue: true,
-              layout: 'center',
-              theme: 'defaultTheme',
-              template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
-              timeout: 2000, // delay for closing event. Set false for sticky notifications
-          });
-          console.log('html: '+n.options.id);
-      }
-
       $(function(){
             App = {};
             get_quiz();
