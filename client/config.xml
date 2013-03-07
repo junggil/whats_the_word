@@ -1,0 +1,22 @@
+<?xml version   ="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.lge.weword"
+    versioncode = "1"
+    version     = "1.0.0">
+    
+    <name>WeWord</name>
+    
+    <content src="index.html"/>
+    <icon src="icon.jpg" width="256" height="256" />
+    
+    <description>
+        Word guessing game 
+    </description>
+    
+    <preference name="phonegap-version" value="2.0.0" />
+
+    <!-- for Android -->
+    <preference name="orientation" value="portrait" />
+    <preference name="android-minSdkVersion" value="9" />
+</widget>
