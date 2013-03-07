@@ -22,7 +22,14 @@
           if (data.success) { $(location).attr('href','#page1');} 
           else { show_message('warning'); }
       });
-      socket.on('quiz next notification', function(){ get_quiz(); });
+      socket.on('quiz next', function(data){
+          if (data.nickname == App['nickname']){ show_message('success'); }
+          else { 
+              $('.info span').html(data.nickname);
+              show_message('info'); 
+          }
+          setTimeout("get_quiz();", 2000);
+      });
 
       connect_to_server = function() {
           if ($('#nickname').val() === ""){
@@ -121,10 +128,8 @@
                   res += answers[i].innerText;
               }
               if (i == answers.length) {
-                  $.getJSON(server + '/quiz/submit?callback=?', {'nickname':App['nickname'], 'answer': res}, function(data) {
-                      if (data.result){ show_message('success'); }
-                      else { show_message('error'); }
-                  });
+                  console.log(res);
+                  $.getJSON(server + '/quiz/submit?callback=?', {'nickname':App['nickname'], 'answer': res});
               }
           }
       }
@@ -194,9 +199,13 @@
           </h5>
       </div>
   </div>
+  <div class="info message" style="top: -78px;">
+      <h3><span style="color:orange">James</span> solve this quiz.</h3>
+      <p>Let's move on to the next problem in 2 seconds.</p>
+  </div>
   <div class="success message" style="top: -78px;">
       <h3>Congrats, you did it!</h3>
-      <p>Let's move on to the next problem.</p>
+      <p>Let's move on to the next problem in 2 seconds.</p>
   </div>
   <div class="warning message" style="top: -78px;">
       <h3>Warning!</h3>

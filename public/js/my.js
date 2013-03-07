@@ -273,14 +273,29 @@ function closestEnabledButton( element ) {
 
 $(function(){
     var socket = io.connect(window.location.hostname);
-    socket.on('playlist add', function(data) {
-        add_movie(data.id, data.title);
+    socket.on('quiz next', function(data) {
+        $('.info span').html(data.nickname);
+        show_message('info'); 
+        setTimeout("get_quiz();", 2000);
     });
-    socket.on('playlist position', function(data) {
-        swap_position(data.from, data.to);
+    socket.on('update trial', function(data){
+        update_board(data.nickname, data.trial);
     });
-    socket.on('chat message', function(data){
-        show_chat(data.nickname, data.msg);
+    socket.on('update ranking', function(data){
+        for(var i=0; i < data.length; i++) {
+            var name = $('#ranking' + i + ' h3');
+            var num_quiz = $('#ranking' + i + ' h5 span');
+            var user_info = data[i];
+
+            name.fadeOut('slow', function () {
+                name.html(user_info[0]);
+                name.fadeIn('slow');
+            });
+            num_quiz.fadeOut('slow', function () {
+                num_quiz.html(user_info[1]);
+                num_quiz.fadeIn('slow');
+            });
+        }
     });
 });
     

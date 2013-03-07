@@ -26,7 +26,6 @@ app.configure 'production', () =>
   app.use express.errorHandler()
 
 global.tv_code = 2848
-global.devices = {}
 
 get_random_code = () -> Math.floor(Math.random() * 10000)
 endsWith = (str, suffix) -> str.indexOf(suffix, str.length - suffix.length) != -1
@@ -39,10 +38,16 @@ shuffle = (o) ->
       o[j] = x
     return o
 
-fs.readdir('public/images/quiz/', (err, files) ->
-    global.quiz_bucket = shuffle(files.filter((filename) -> endsWith(filename, '.jpg')).map((filename) -> filename.split('.')[0]))
-    global.quiz_info = {stage:1, quiz:quiz_bucket.pop()}
-)
+bySortedValue = (obj) ->
+    tuples = ([key, obj[key]] for key of obj)
+    tuples.sort((a, b) -> if a[1] < b[1] then 1 else if a[1] > b[1] then -1 else 0)
+
+init_quiz = () ->
+    fs.readdir('public/images/quiz/', (err, files) ->
+        global.quiz_bucket = shuffle(files.filter((filename) -> endsWith(filename, '.jpg')).map((filename) -> filename.split('.')[0]))
+        global.quiz_info = {stage:1, quiz:quiz_bucket.pop()}
+        global.devices = {}
+    )
 
 #Socket.io
 io.sockets.on 'connection', (socket) =>
@@ -54,28 +59,31 @@ io.sockets.on 'connection', (socket) =>
         else
             devices[data.nickname] = 0
             socket.emit 'connect ack', {success:true}
-    socket.on 'mobile chat', (data) =>
-        socket.broadcast.emit 'chat message', data
+            socket.broadcast.emit 'update ranking', bySortedValue(devices)[0..2]
 
 #RestAPI
 app.get '/quiz/submit', (req, res) =>
-    if req.body['answer'] == quiz_info.quiz.toUpperCase()
+    if req.query['answer'] == quiz_info.quiz.toUpperCase()
         global.quiz_info = {stage:quiz_info.stage + 1, quiz:quiz_bucket.pop()}
-        io.sockets.emit 'quiz next notification'
-        res.json {result:true}
-    else
-        res.json {result:false}
+        devices[req.query['nickname']]++
+        io.sockets.emit 'quiz next', {nickname:req.query['nickname']}
+        io.sockets.emit 'update ranking', bySortedValue(devices)[0..2]
+    io.sockets.emit 'update trial', {nickname:req.query['nickname'], trial:req.query['answer']}
+    res.json ''
 
 app.get '/quiz', (req, res) =>
     res.json quiz_info
 
 #Routes
 app.get '/', (req, res) =>
+    init_quiz()
     global.tv_code = get_random_code()
     res.render('game', {
         code: tv_code
     })
     console.log tv_code
+
+init_quiz()
 
 app.listen process.env.PORT || 5000, () =>
   console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
