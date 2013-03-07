@@ -15,7 +15,8 @@ html
     script(src='/js/my.js')
     script
         var App = {};
-        var server = 'http://weword.herokuapp.com:80';
+        //var server = 'http://weword.herokuapp.com:80';
+        var server = 'http://192.168.0.2:5000'
 
         update_board = function(name, trial) {
             $('#board').prepend($('<div class="dd dd-handle">').html('<span></span> &nbsp;<span style="color:orange"></span> says : <span style="color:green"></span>'));
@@ -70,31 +71,32 @@ html
       div(data-theme='a', data-role='header')
         h5#stage
           | Stage   
-      div(data-role='content')
-        .split-wrapper
-          .content-secondary(style='text-align:center;margin-top:15px')
-            img#quiz_pic
-          .content-primary
-            ul(data-role='listview', data-divider-theme='a', data-inset='true')
-                li(data-role='list-divider', role='heading')
-                 | Ranking
-                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking0
-                   img.ui-li-thumb(src='/images/1st.jpg', alt='Thumbnail')
-                   h3.ui-li-heading Waiting
-                   h5.ui-li-heading 맞춘 문제 : 
-                     span 0
-                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking1
-                   img.ui-li-thumb(src='/images/2nd.jpg', alt='Thumbnail')
-                   h3.ui-li-heading Waiting
-                   h5.ui-li-heading 맞춘 문제 : 
-                     span 0
-                li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking2
-                   img.ui-li-thumb(src='/images/3rd.jpg', alt='Thumbnail')
-                   h3.ui-li-heading Waiting
-                   h5.ui-li-heading 맞춘 문제 : 
-                     span 0
-            #board
-      #answer(style="text-align:center;margin-top:50px")
+      div(style="background-image: url(/images/word_wall.jpg); border: 1px solid black;")
+          div(data-role='content')
+            .split-wrapper
+              .content-secondary(style='text-align:center;margin-top:15px')
+                img#quiz_pic(style="width:400px; height:400px")
+              .content-primary
+                ul(data-role='listview', data-divider-theme='a', data-inset='true')
+                    li(data-role='list-divider', role='heading')
+                     | Ranking
+                    li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking0
+                       img.ui-li-thumb(src='/images/1st.jpg', alt='Thumbnail')
+                       h3.ui-li-heading Waiting
+                       h5.ui-li-heading 맞춘 문제 : 
+                         span 0
+                    li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking1
+                       img.ui-li-thumb(src='/images/2nd.jpg', alt='Thumbnail')
+                       h3.ui-li-heading Waiting
+                       h5.ui-li-heading 맞춘 문제 : 
+                         span 0
+                    li.ui-li.ui-li-static.ui-btn-up-c.ui-li-has-thumb(data-theme='a')#ranking2
+                       img.ui-li-thumb(src='/images/3rd.jpg', alt='Thumbnail')
+                       h3.ui-li-heading Waiting
+                       h5.ui-li-heading 맞춘 문제 : 
+                         span 0
+                #board
+          #answer(style="text-align:center;margin-top:50px;margin-bottom:33px")
       div(data-theme='a', data-role='footer', data-position='fixed')
         h2
           p(style="text-decoration:underline;color:orange;") CODE: #{code}
