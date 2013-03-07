@@ -276,6 +276,12 @@ $(function(){
     socket.on('quiz next', function(data) {
         $('.info span').html(data.nickname);
         show_message('info'); 
+
+        answer = $('#answer span');
+        for(var i=0; i < answer.length; i++) {
+            answer.eq(i).html(App['answer'][i]);
+        }
+
         setTimeout("get_quiz();", 2000);
     });
     socket.on('update trial', function(data){
@@ -283,18 +289,8 @@ $(function(){
     });
     socket.on('update ranking', function(data){
         for(var i=0; i < data.length; i++) {
-            var name = $('#ranking' + i + ' h3');
-            var num_quiz = $('#ranking' + i + ' h5 span');
-            var user_info = data[i];
-
-            name.fadeOut('slow', function () {
-                name.html(user_info[0]);
-                name.fadeIn('slow');
-            });
-            num_quiz.fadeOut('slow', function () {
-                num_quiz.html(user_info[1]);
-                num_quiz.fadeIn('slow');
-            });
+            $('#ranking' + i + ' h3').html(data[i][0]);
+            $('#ranking' + i + ' h5 span').html(data[i][1]);
         }
     });
 });

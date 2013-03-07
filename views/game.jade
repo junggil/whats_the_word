@@ -15,11 +15,11 @@ html
     script(src='/js/my.js')
     script
         var App = {};
-        var server = 'http://192.168.0.2:5000';
+        var server = 'http://weword.herokuapp.com:80';
 
         update_board = function(name, trial) {
             $('#board').prepend($('<div class="dd dd-handle">').html('<span></span> &nbsp;<span style="color:orange"></span> says : <span style="color:green"></span>'));
-            $('#board span').eq(0).html(App['num_try']++);
+            $('#board span').eq(0).html('Stage ' + App['stage']);
             $('#board span').eq(1).html(name);
             $('#board span').eq(2).html(trial);
 
@@ -34,9 +34,10 @@ html
             setTimeout(function() {$('.' + type).animate({top: "-78"}, 500);}, 2000);
         }
         get_quiz = function() {
-            App['num_try'] = 1;
             $.getJSON(server + '/quiz?callback=?', null, function(data){
                 if (data.quiz) { 
+                    App['stage'] = data.stage;
+                    App['answer'] = data.quiz.toUpperCase();
                     $('#stage').html('Stage ' + data.stage);
                     image = $('#quiz_pic');
                     image.fadeOut('fast', function () {
@@ -62,7 +63,6 @@ html
             });
         }
         $(function(){
-            App['num_try'] = 1;
             get_quiz();
         });
   body

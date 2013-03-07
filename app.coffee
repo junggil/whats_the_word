@@ -67,9 +67,11 @@ app.get '/quiz/submit', (req, res) =>
         global.quiz_info = {stage:quiz_info.stage + 1, quiz:quiz_bucket.pop()}
         devices[req.query['nickname']]++
         io.sockets.emit 'quiz next', {nickname:req.query['nickname']}
+        io.sockets.emit 'update trial', {nickname:req.query['nickname'], trial:req.query['answer']}
         io.sockets.emit 'update ranking', bySortedValue(devices)[0..2]
-    io.sockets.emit 'update trial', {nickname:req.query['nickname'], trial:req.query['answer']}
-    res.json ''
+        res.json {success:true}
+    else
+        res.json {success:false}
 
 app.get '/quiz', (req, res) =>
     res.json quiz_info
