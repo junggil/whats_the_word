@@ -63,11 +63,11 @@ io.sockets.on 'connection', (socket) =>
 
 #RestAPI
 app.get '/quiz/submit', (req, res) =>
+    io.sockets.emit 'update trial', {nickname:req.query['nickname'], trial:req.query['answer']}
     if req.query['answer'] == quiz_info.quiz.toUpperCase()
         global.quiz_info = {stage:quiz_info.stage + 1, quiz:quiz_bucket.pop()}
         devices[req.query['nickname']]++
         io.sockets.emit 'quiz next', {nickname:req.query['nickname']}
-        io.sockets.emit 'update trial', {nickname:req.query['nickname'], trial:req.query['answer']}
         io.sockets.emit 'update ranking', bySortedValue(devices)[0..2]
         res.json {success:true}
     else

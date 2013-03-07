@@ -19,10 +19,14 @@ html
         //var server = 'http://192.168.0.2:5000'
 
         update_board = function(name, trial) {
-            $('#board').prepend($('<div class="dd dd-handle">').html('<span></span> &nbsp;<span style="color:orange"></span> says : <span style="color:green"></span>'));
+            $('#board').prepend($('<div class="dd dd-handle">').html('<span></span> &nbsp;<span style="color:orange"></span> says : <span style="color:red"></span>'));
             $('#board span').eq(0).html('Stage ' + App['stage']);
             $('#board span').eq(1).html(name);
             $('#board span').eq(2).html(trial);
+
+            if (trial == App['answer']) {
+                $('#board span').eq(2).css('color','green');
+            }
 
             var trials = $('#board div');
             for(var i=5; i< trials.length; i++) {
