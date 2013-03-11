@@ -14,12 +14,16 @@
   <script src="site_media/js/my.js"></script>
   <!-- User-generated js -->
   <script>
+      var App = {};
       var server = 'http://weword.herokuapp.com:80';
       //var server = 'http://192.168.0.2:5000';
       var socket = io.connect(server);
 
       socket.on('connect ack', function(data){
-          if (data.success) { $(location).attr('href','#page1');} 
+          if (data.success) { 
+              get_quiz();
+              $(location).attr('href','#page1');
+          } 
           else { show_message('warning'); }
       });
       socket.on('quiz next', function(data){
@@ -77,7 +81,8 @@
       }
 
       init_answer = function(stage, answer) {
-          var image, random_keys = "";
+          var image, div_layout, random_keys = "";
+          div_layout = "abcdeabcde";
           App['mapping'] = {};
 
           $('#stage').html('Stage ' + stage);
@@ -97,12 +102,11 @@
               random_keys += get_random_str();
           }
           random_keys = (random_keys + answer).substr(-10).toUpperCase();
-          width = $('#alphabets').width() / 5;
 
           for (var i=0; i < 10; i++){
               var random_key = get_random_str(random_keys);
               random_keys = random_keys.replace(new RegExp(random_key),"");
-              $('#alphabets').append($('<div style="float: left;width:'+width+'px;height:50px">').html($('<span onClick="javascript:add_single('+i+',\''+random_key+'\');" style="display: inline-block; width:40px; height:40px; background:#EAC117; margin-right:5px; margin-bottom: 5px; font-size:xx-large; color:#EBEBEB; text-shadow:2px 2px #000;">').html(random_key)));
+              $('#alphabets').append($('<div class="ui-block-'+div_layout[i]+'" style="float: left">').html($('<span onClick="javascript:add_single('+i+',\''+random_key+'\');" style="display: inline-block; width:35px; height:35px; background:#EAC117; margin-right:5px; margin-bottom: 5px; font-size:xx-large; color:#EBEBEB; text-shadow:2px 2px #000;">').html(random_key)));
           }
       }
       add_single = function(pos, ch) {
@@ -140,10 +144,6 @@
           $('#answer span').eq(pos).html('_');
           $('#alphabets span').eq(App['mapping'][pos]).slideDown();
       }
-      $(function(){
-            App = {};
-            get_quiz();
-      });
   </script>
 </head>
 <body>
